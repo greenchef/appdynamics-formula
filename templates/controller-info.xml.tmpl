@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+{%- from 'appdynamics/conf/settings.sls' import appd with context %}
+<controller-info>
+ 
+    <controller-host>{{ appd.controller_host }}</controller-host>
+    <controller-port>{{ appd.controller_port }}</controller-port>    
+    <controller-ssl-enabled>true</controller-ssl-enabled>
+    <unique-host-id>GRAINSyour-host-id</unique-host-id>   
+    <account-name>{{ appd.account_name }}</account-name> 
+    <account-access-key>{{ appd.access_key }}</account-access-key>
+ 
+</controller-info> 
