@@ -31,7 +31,7 @@ fix-appdynamics-filesystem-permissions:
 
 create-appdynamics-symlink:
   file.symlink:
-    - name: {{ prefix.prefix }}/appdynamics/appdynamics-agent
+    - name: {{ appd.prefix }}/appdynamics/appdynamics-agent
     - target: {{ appd.prefix }}/appdynamics/machineagent-bundle-64bit-linux-{{ appd.version }}
     - user: appdynamics
     - watch:
@@ -67,7 +67,7 @@ appdynamics:
   user.present
 
 ### FILES ###
-{{ appdynamics.prefix }}/appdynamics/appdynamics-agent/conf/controller-info.xml:
+{{ appd.prefix }}/appdynamics/appdynamics-agent/conf/controller-info.xml:
   file.managed:
     - source: salt://appdynamics/templates/controller-info.xml.tmpl
     - user: {{ appd.user }}
