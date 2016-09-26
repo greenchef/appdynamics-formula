@@ -1,4 +1,4 @@
-{%- from 'conf/settings.sls' import appd with context %}
+{%- from 'appdynamics/conf/settings.sls' import appd with context %}
 
 ### APPLICATION INSTALL ###
 unpack-appdynamics-tarball:
