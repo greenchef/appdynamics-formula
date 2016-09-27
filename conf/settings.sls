@@ -1,5 +1,5 @@
-{% set p  = salt['pillar.get']('confluence', {}) %}
-{% set g  = salt['grains.get']('confluence', {}) %}
+{% set p  = salt['pillar.get']('appdynamics', {}) %}
+{% set g  = salt['grains.get']('appdynamics', {}) %}
 
 
 {%- set default_version      = '4.2.7.0' %}
@@ -7,6 +7,7 @@
 {%- set default_source_url   = 'https://s3-us-west-2.amazonaws.com/salt-artifacts' %}
 {%- set default_appd_user    = 'appdynamics' %}
 {%- set default_account_name = 'appdynamics' %}
+{%- set default_access_key   = 'changeme' %}
 {%- set default_controller_host    = 'appdynamics.com' %}
 {%- set default_controller_port    = '8090' %}
 
@@ -15,6 +16,7 @@
 {%- set prefix          = g.get('prefix', p.get('prefix', default_prefix)) %}
 {%- set appd_user       = g.get('user', p.get('user', default_appd_user)) %}
 {%- set account_name    = g.get('account_name', p.get('account_name', default_account_name)) %}
+{%- set access_key      = g.get('access_key', p.get('access_key', default_access_key)) %}
 {%- set controller_host = g.get('controller_host', p.get('controller_host', default_controller_host)) %}
 {%- set controller_port = g.get('controller_port', p.get('controller_port', default_controller_port)) %}
 
@@ -28,6 +30,7 @@
                       'prefix'          : prefix,
                       'user'            : appd_user,
                       'account_name'    : account_name,
+                      'access_key'      : access_key,
                       'controller_host' : controller_host,
                       'controller_port' : controller_port,
                   }) %}
