@@ -5,7 +5,7 @@ unpack-appdynamics-tarball:
   archive.extracted:
     - name: {{ appd.prefix }}/appdynamics
     - source: {{ appd.source_url }}/machineagent-bundle-64bit-linux-{{ appd.version }}.zip
-    - source_hash: {{ salt['pillar.get']('appd:source_hash', '') }}
+    - source_hash: {{ salt['pillar.get']('appdynamics:source_hash', '') }}
     - archive_format: zip
     - user: appdynamics
     - if_missing: {{ appd.prefix }}/appdynamics-{{ appd.version }}
