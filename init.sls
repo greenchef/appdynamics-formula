@@ -23,15 +23,15 @@ fix-appdynamics-filesystem-permissions:
     - recurse:
       - user
     - names:
-      - {{ appd.prefix }}/appdynamics/machineagent-bundle-64bit-linux-{{ appd.version }}
+      - {{ appd.prefix }}/machineagent-bundle-64bit-linux-{{ appd.version }}
       - {{ appd.home }}
     - watch:
       - archive: unpack-appdynamics-tarball
 
 create-appdynamics-symlink:
   file.symlink:
-    - name: {{ appd.prefix }}/appdynamics/appdynamics-agent
-    - target: {{ appd.prefix }}/appdynamics/machineagent-bundle-64bit-linux-{{ appd.version }}
+    - name: {{ appd.prefix }}/appdynamics-agent
+    - target: {{ appd.prefix }}/machineagent-bundle-64bit-linux-{{ appd.version }}
     - user: appdynamics
     - watch:
       - archive: unpack-appdynamics-tarball
@@ -59,14 +59,14 @@ appdynamics-stop:
 appdynamics-init-script:
   file.symlink:
     - name: '/etc/systemd/system/appdynamics.service'
-    - target: '{{ appd.prefix }}/appdynamics/appdynamics-agent/etc/systemd/system/appdynamics-machine-agent.service'
+    - target: '{{ appd.prefix }}/appdynamics-agent/etc/systemd/system/appdynamics-machine-agent.service'
     - user: root
 
 appdynamics:
   user.present
 
 ### FILES ###
-{{ appd.prefix }}/appdynamics/appdynamics-agent/conf/controller-info.xml:
+{{ appd.prefix }}/appdynamics-agent/conf/controller-info.xml:
   file.managed:
     - source: salt://appdynamics/templates/controller-info.xml.tmpl
     - user: {{ appd.user }}
