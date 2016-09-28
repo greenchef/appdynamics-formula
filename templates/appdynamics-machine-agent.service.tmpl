@@ -1,0 +1,48 @@
+[Unit]
+Description=AppDynamics Machine Agent
+
+[Service]
+
+# The AppDynamics machine agent startup script does not fork a process, so
+# this is a simple service.
+# Note: If you are changing the User running the machine agent, you must also ensure
+# that the desired user has read access to controller-info.xml as well as write access
+# to the log file. You can change specific file permissions or, most simply, do a
+# chown command to give the desired user ownership of the MACHINE_AGENT_HOME directory.
+
+Type=simple
+
+Environment=MACHINE_AGENT_HOME={{ appd.prefix }}/appdynamics-agent
+Environment=JAVA_HOME={{ appd.prefix }}/appdynamics-agent/jre
+
+# Specify agent system properties for systemd here by setting or editing JAVA_OPTS, e.g.,
+#Environment="JAVA_OPTS=-D<sys-property1>=<value1> -D<sys-property2>=<value2>"
+
+# Modify the next two lines to specify the user to run the machine agent as. Note that
+# you will need to ensure that the controller-info.xml in the agent conf directory must
+# be readable by this user, and that the logs directory is also writeable by that user.
+User=root
+Environment=MACHINE_AGENT_USER=root
+
+# The next three lines must point to the same location (i.e. the
+# PIDFILE env var and the PIDFile property.)
+Environment=PIDDIR=/var/run/appdynamics
+Environment=PIDFILE=${PIDDIR}/appdynamics-machine-agent.pid
+PIDFile=/var/run/appdynamics/appdynamics-machine-agent.pid
+
+# Killing the service using systemd causes Java to exit with status 143. This is OK.
+SuccessExitStatus=143
+
+# Run ExecStartPre with root-permissions
+PermissionsStartOnly=true
+
+# Create the pid dir
+ExecStartPre=/usr/bin/install -o $MACHINE_AGENT_USER -d $PIDDIR
+
+# This specifies the command line to use
+ExecStart=/bin/sh -c "\"${MACHINE_AGENT_HOME}/bin/machine-agent\" -p ${PIDFILE}"
+
+[Install]
+# Start the AppDynamics machine agent service during the setup for a
+# non-graphical multi-user system.
+WantedBy=multi-user.target
