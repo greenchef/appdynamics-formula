@@ -59,15 +59,15 @@ appdynamics-stop:
 appdynamics-init-script:
   file.managed:
     - name: '{{ appd.prefix }}/appdynamics-agent/etc/systemd/system/appdynamics-machine-agent.service'
-    - source: salt://confluence/templates/appdynamics-machine-agent.service.tmpl
+    - source: salt://appdynamics/templates/appdynamics-machine-agent.service.tmpl
     - user: root
     - group: root
     - mode: 0644
     - template: jinja
     - context:
-      confluence: {{ appd|json }}
+      appd: {{ appd|json }}
 
-create-confluence-service-symlink:
+create-appdynamics-service-symlink:
   file.symlink:
     - name: '/etc/systemd/system/appdynamics.service'
     - target: '{{ appd.prefix }}/appdynamics-agent/etc/systemd/system/appdynamics-machine-agent.service'
