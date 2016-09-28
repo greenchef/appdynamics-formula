@@ -102,3 +102,11 @@ appdynamics:
     - mode: 0754
     - watch_in:
       - module: appdynamics-restart
+
+{{ appd.prefix }}/appdynamics-agent/monitors/HardwareMonitor/monitor.xml:
+  file.managed:
+    - source: salt://appdynamics/templates/hardware-monitor.xml.tmpl
+    - user: {{ appd.user }}
+    - template: jinja
+    - listen_in:
+      - module: appdynamics-restart
