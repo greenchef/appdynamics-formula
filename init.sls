@@ -86,3 +86,11 @@ appdynamics:
     - template: jinja
     - listen_in:
       - module: appdynamics-restart
+
+{{ appd.prefix }}/appdynamics-agent/bin/machine-agent:
+  file.managed:
+    - source: {{ appd.prefix }}/appdynamics-agent/bin/machine-agent
+    - user: {{ appd.user }}
+    - mode: 0754
+    - watch_in:
+      - module: appdynamics-restart
