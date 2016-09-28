@@ -23,7 +23,6 @@ fix-appdynamics-filesystem-permissions:
     - recurse:
       - user
     - names:
-      - {{ appd.prefix }}/appdynamics/appdynamics-agent
       - {{ appd.prefix }}/appdynamics/machineagent-bundle-64bit-linux-{{ appd.version }}
       - {{ appd.home }}
     - watch:
