@@ -107,7 +107,14 @@ appdynamics:
   file.managed:
     - source: salt://appdynamics/templates/hardware-monitor.xml.tmpl
     - user: {{ appd.user }}
-    - mode: 0754
     - template: jinja
+    - listen_in:
+      - module: appdynamics-restart
+
+{{ appd.prefix }}/appdynamics-agent/monitors/HardwareMonitor/linux-stat.sh:
+  file.managed:
+    - source: {{ appd.prefix }}/appdynamics-agent/monitors/HardwareMonitor/linux-stat.sh:
+    - user: {{ appd.user }}
+    - mode: 0754
     - listen_in:
       - module: appdynamics-restart
