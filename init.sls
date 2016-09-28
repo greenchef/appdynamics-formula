@@ -107,6 +107,7 @@ appdynamics:
   file.managed:
     - source: salt://appdynamics/templates/hardware-monitor.xml.tmpl
     - user: {{ appd.user }}
+    - mode: 0754
     - template: jinja
     - listen_in:
       - module: appdynamics-restart
