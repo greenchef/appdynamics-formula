@@ -3,12 +3,12 @@
 ### APPLICATION INSTALL ###
 unpack-appdynamics-tarball:
   archive.extracted:
-    - name: {{ appd.prefix }}/appdynamics
+    - name: {{ appd.prefix }}/machineagent-bundle-64bit-linux-{{ appd.version }}
     - source: {{ appd.source_url }}/machineagent-bundle-64bit-linux-{{ appd.version }}.zip
     - source_hash: {{ salt['pillar.get']('appdynamics:source_hash', '') }}
     - archive_format: zip
-    - user: appdynamics
-    - if_missing: {{ appd.prefix }}/appdynamics-{{ appd.version }}
+    - user: {{ appd.user }}
+    - if_missing: {{ appd.prefix }}/machineagent-bundle-64bit-linux-{{ appd.version }}
     - keep: True
     - require:
       - module: appdynamics-stop
