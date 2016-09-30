@@ -5,7 +5,7 @@
     <controller-host>{{ appd.controller_host }}</controller-host>
     <controller-port>{{ appd.controller_port }}</controller-port>    
     <controller-ssl-enabled>true</controller-ssl-enabled>
-    <unique-host-id>{{ grains['ec2_tags:application'] }}</unique-host-id>
+    <unique-host-id>{{ appd.host_id }}</unique-host-id>
     <account-name>{{ appd.account_name }}</account-name> 
     <account-access-key>{{ appd.access_key }}</account-access-key>
     <sim-enabled>false</sim-enabled>

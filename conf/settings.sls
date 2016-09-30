@@ -11,6 +11,7 @@
 {%- set default_controller_host    = 'appdynamics.com' %}
 {%- set default_controller_port    = '8090' %}
 {%- set default_monitor_hardware   = 'true' %}
+{%- set default_host_id      = 'appdynamics-salt-host' %}
 
 {%- set version         = g.get('version', p.get('version', default_version)) %}
 {%- set source_url      = g.get('source_url', p.get('source_url', default_source_url)) %}
@@ -21,6 +22,7 @@
 {%- set controller_host = g.get('controller_host', p.get('controller_host', default_controller_host)) %}
 {%- set controller_port = g.get('controller_port', p.get('controller_port', default_controller_port)) %}
 {%- set enable_hardware_monitor = g.get('enable_hardware_monitor', p.get('enable_hardware_monitor', default_monitor_hardware)) %}
+{%- set host_id         = salt['grains.get']('ec2_tags:application', default_host_it) %}
 
 
 {%- set appd_home  = salt['pillar.get']('users:%s:home' % appd_user, '/home/appdynamics') %}
@@ -36,5 +38,6 @@
                       'controller_host' : controller_host,
                       'controller_port' : controller_port,
                       'enable_hardware_monitor': enable_hardware_monitor,
+                      'host_id'         : host_id,
                   }) %}
 
