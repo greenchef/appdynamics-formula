@@ -58,7 +58,7 @@ appdynamics-stop:
 
 appdynamics-init-script:
   file.managed:
-    - name: '{{ appd.prefix }}/appdynamics-agent/etc/systemd/system/appdynamics-machine-agent.service'
+    - name: '/lib/systemd/system/appdynamics-machine-agent.service'
     - source: salt://appdynamics/templates/appdynamics-machine-agent.service.tmpl
     - user: root
     - group: root
@@ -70,7 +70,7 @@ appdynamics-init-script:
 create-appdynamics-service-symlink:
   file.symlink:
     - name: '/etc/systemd/system/appdynamics.service'
-    - target: '{{ appd.prefix }}/appdynamics-agent/etc/systemd/system/appdynamics-machine-agent.service'
+    - target: '/lib/systemd/system/appdynamics-machine-agent.service'
     - user: root
     - watch:
       - file: appdynamics-init-script
