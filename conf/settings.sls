@@ -22,7 +22,7 @@
 {%- set controller_host = g.get('controller_host', p.get('controller_host', default_controller_host)) %}
 {%- set controller_port = g.get('controller_port', p.get('controller_port', default_controller_port)) %}
 {%- set enable_hardware_monitor = g.get('enable_hardware_monitor', p.get('enable_hardware_monitor', default_monitor_hardware)) %}
-{%- set host_id         = salt['grains.get']('ec2_tags:application', default_host_it) %}
+{%- set host_id         = salt['grains.get']('ec2_tags:application', default_host_id) %}
 
 
 {%- set appd_home  = salt['pillar.get']('users:%s:home' % appd_user, '/home/appdynamics') %}
