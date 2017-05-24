@@ -118,3 +118,14 @@ appdynamics:
     - mode: 0754
     - listen_in:
       - module: appdynamics-restart
+
+/opt/sumologic/sumocollector/sources/appdynamics-agent.json:
+  file.serialize:
+    - user: root
+    - formatter: json
+    - dataset:
+        "api.version": "v1"
+        source:
+          sourceType: LocalFile
+          name: appd-agent
+          pathExpression: {{ appd.prefix }}/appdynamics-agent/logs/machine-agent.log
