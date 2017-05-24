@@ -4,7 +4,7 @@
 
 {%- set default_version      = '4.2.7.0' %}
 {%- set default_prefix       = '/opt' %}
-{%- set default_source_url   = 'https://s3-us-west-2.amazonaws.com/salt-artifacts' %}
+{%- set default_source_url   = 'https://s3-us-west-2.amazonaws.com/salt-artifacts2' %}
 {%- set default_appd_user    = 'appdynamics' %}
 {%- set default_account_name = 'appdynamics' %}
 {%- set default_access_key   = 'changeme' %}
