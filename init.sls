@@ -10,6 +10,7 @@ unpack-appdynamics-tarball:
     - user: {{ appd.user }}
     - if_missing: {{ appd.prefix }}/machineagent-bundle-64bit-linux-{{ appd.version }}
     - keep: True
+    - enforce_toplevel: False
     - require:
       - module: appdynamics-stop
       - file: appdynamics-init-script
