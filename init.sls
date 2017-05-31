@@ -3,17 +3,17 @@
 ### APPLICATION INSTALL ###
 unpack-appdynamics-tarball:
   archive.extracted:
-    - name: {{ appd.prefix }}/machineagent-bundle-64bit-linux-{{ appd.version }}
-    - source: {{ appd.source_url }}/machineagent-bundle-64bit-linux-{{ appd.version }}.zip
+    - name: {{ appd.prefix }}/appdynamics-sdk-native-nativeWebServer-64bit-linux-{{ appd.version }}.tar.gz
+    - source: {{ appd.source_url }}/appdynamics-sdk-native-nativeWebServer-64bit-linux-{{ appd.version }}.tar.gz
     - source_hash: {{ salt['pillar.get']('appdynamics:source_hash', '') }}
-    - archive_format: zip
+    - archive_format: tar
     - user: {{ appd.user }}
-    - if_missing: {{ appd.prefix }}/machineagent-bundle-64bit-linux-{{ appd.version }}
+    - if_missing: {{ appd.prefix }}/appdynamics-sdk-native-nativeWebServer-64bit-linux-{{ appd.version }}
     - keep: True
     - enforce_toplevel: False
     - require:
       - module: appdynamics-stop
-      - file: appdynamics-init-script
+#      - file: appdynamics-init-script
       - user: appdynamics
     - listen_in:
       - module: appdynamics-restart
@@ -24,7 +24,7 @@ fix-appdynamics-filesystem-permissions:
     - recurse:
       - user
     - names:
-      - {{ appd.prefix }}/machineagent-bundle-64bit-linux-{{ appd.version }}
+      - {{ appd.prefix }}/appdynamics-sdk-native-nativeWebServer-64bit-linux-{{ appd.version }}
       - {{ appd.home }}
     - watch:
       - archive: unpack-appdynamics-tarball
@@ -32,7 +32,7 @@ fix-appdynamics-filesystem-permissions:
 create-appdynamics-symlink:
   file.symlink:
     - name: {{ appd.prefix }}/appdynamics-agent
-    - target: {{ appd.prefix }}/machineagent-bundle-64bit-linux-{{ appd.version }}
+    - target: {{ appd.prefix }}/appdynamics-sdk-native-nativeWebServer-64bit-linux-{{ appd.version }}
     - user: appdynamics
     - watch:
       - archive: unpack-appdynamics-tarball
@@ -44,7 +44,7 @@ appdynamics-service:
     - enable: True
     - require:
       - archive: unpack-appdynamics-tarball
-      - file: appdynamics-init-script
+#      - file: appdynamics-init-script
 
 # used to trigger restarts by other states
 appdynamics-restart:
@@ -57,24 +57,24 @@ appdynamics-stop:
     - name: service.stop
     - m_name: appdynamics
 
-appdynamics-init-script:
-  file.managed:
-    - name: '/lib/systemd/system/appdynamics-machine-agent.service'
-    - source: salt://appdynamics/templates/appdynamics-machine-agent.service.tmpl
-    - user: root
-    - group: root
-    - mode: 0644
-    - template: jinja
-    - context:
-      appd: {{ appd|json }}
+#appdynamics-init-script:
+#  file.managed:
+#    - name: '/lib/systemd/system/appdynamics-agent.service'
+#    - source: salt://appdynamics/templates/appdynamics-machine-agent.service.tmpl #TODO - Do I really need an init script?
+#    - user: root
+#    - group: root
+#    - mode: 0644
+#    - template: jinja
+#    - context:
+#      appd: {{ appd|json }}
 
 create-appdynamics-service-symlink:
   file.symlink:
     - name: '/etc/systemd/system/appdynamics.service'
-    - target: '/lib/systemd/system/appdynamics-machine-agent.service'
+    - target: '/lib/systemd/system/appdynamics-agent.service'
     - user: root
-    - watch:
-      - file: appdynamics-init-script
+#    - watch:
+#      - file: appdynamics-init-script
 
 appdynamics:
   user.present
@@ -88,9 +88,9 @@ appdynamics:
     - listen_in:
       - module: appdynamics-restart
 
-{{ appd.prefix }}/appdynamics-agent/bin/machine-agent:
+{{ appd.prefix }}/appdynamics-agent/bin/machine-agent: # TODO
   file.managed:
-    - source: {{ appd.prefix }}/appdynamics-agent/bin/machine-agent
+    - source: {{ appd.prefix }}/appdynamics-agent/bin/machine-agent # TODO
     - user: {{ appd.user }}
     - mode: 0754
     - watch_in:
