@@ -88,13 +88,13 @@ appdynamics:
     - listen_in:
       - module: appdynamics-restart
 
-{{ appd.prefix }}/appdynamics-agent/bin/machine-agent: # TODO
-  file.managed:
-    - source: {{ appd.prefix }}/appdynamics-agent/bin/machine-agent # TODO
-    - user: {{ appd.user }}
-    - mode: 0754
-    - watch_in:
-      - module: appdynamics-restart
+#{{ appd.prefix }}/appdynamics-agent/bin/machine-agent: # TODO
+#  file.managed:
+#    - source: {{ appd.prefix }}/appdynamics-agent/bin/machine-agent # TODO
+#    - user: {{ appd.user }}
+#    - mode: 0754
+#    - watch_in:
+#      - module: appdynamics-restart
 
 {{ appd.prefix }}/appdynamics-sdk-native/proxy/jre/bin/java:
   file.managed:
@@ -120,13 +120,13 @@ appdynamics:
     - listen_in:
       - module: appdynamics-restart
 
-/opt/sumologic/sumocollector/sources/appdynamics-agent.json:
-  file.serialize:
-    - user: root
-    - formatter: json
-    - dataset:
-        "api.version": "v1"
-        source:
-          sourceType: LocalFile
-          name: appd-agent
-          pathExpression: {{ appd.prefix }}/appdynamics-agent/logs/machine-agent.log
+#/opt/sumologic/sumocollector/sources/appdynamics-agent.json:
+#  file.serialize:
+#    - user: root
+#    - formatter: json
+#    - dataset:
+#        "api.version": "v1"
+#        source:
+#          sourceType: LocalFile
+#          name: appd-agent
+#          pathExpression: {{ appd.prefix }}/appdynamics-agent/logs/machine-agent.log
