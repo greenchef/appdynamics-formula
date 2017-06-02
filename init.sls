@@ -3,7 +3,7 @@
 ### APPLICATION INSTALL ###
 unpack-appdynamics-tarball:
   archive.extracted:
-    - name: {{ appd.prefix }}/appdynamics-sdk-native-nativeWebServer-64bit-linux-{{ appd.version }}.tar.gz
+    - name: {{ appd.prefix }}/appdynamics-sdk-native-nativeWebServer-64bit-linux-{{ appd.version }}
     - source: {{ appd.source_url }}/appdynamics-sdk-native-nativeWebServer-64bit-linux-{{ appd.version }}.tar.gz
     - source_hash: {{ salt['pillar.get']('appdynamics:source_hash', '') }}
     - archive_format: tar
