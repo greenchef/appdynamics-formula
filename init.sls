@@ -32,7 +32,7 @@ fix-appdynamics-filesystem-permissions:
 create-appdynamics-symlink:
   file.symlink:
     - name: {{ appd.prefix }}/appdynamics-agent
-    - target: {{ appd.prefix }}/appdynamics-sdk-native-nativeWebServer-64bit-linux-{{ appd.version }}
+    - target: {{ appd.prefix }}/appdynamics-sdk-native-nativeWebServer-64bit-linux-{{ appd.version }}/appdynamics-sdk-native
     - user: appdynamics
     - watch:
       - archive: unpack-appdynamics-tarball
