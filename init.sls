@@ -96,9 +96,9 @@ appdynamics:
 #    - watch_in:
 #      - module: appdynamics-restart
 
-{{ appd.prefix }}/appdynamics-sdk-native/proxy/jre/bin/java:
+{{ appd.prefix }}/appdynamics-agent/proxy/jre/bin/java:
   file.managed:
-    - source: {{ appd.prefix }}/appdynamics-sdk-native/proxy/jre/bin/java
+    - source: {{ appd.prefix }}/appdynamics-agent/proxy/jre/bin/java
     - user: {{ appd.user }}
     - mode: 0754
     - watch_in:
