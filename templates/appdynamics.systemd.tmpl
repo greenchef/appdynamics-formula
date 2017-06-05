@@ -1,0 +1,11 @@
+[Unit]
+Description=AppDynamics Server Agent
+
+[Service]
+KillMode=process
+Restart=on-failure
+RestartPreventExitStatus=255
+Type=forking
+
+[Install]
+Alias=appdynamics.service

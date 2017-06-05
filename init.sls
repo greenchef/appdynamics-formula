@@ -60,7 +60,7 @@ appdynamics-stop:
 appdynamics-init-script:
   file.managed:
     - name: '/lib/systemd/system/appdynamics-agent.service'
-    - source: salt://appdynamics/templates/appdynamics-machine-agent.service.tmpl
+    - source: salt://appdynamics/templates/appdynamics.systemd.tmpl
     - user: root
     - group: root
     - mode: 0644
