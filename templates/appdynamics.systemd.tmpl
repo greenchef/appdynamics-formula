@@ -37,10 +37,10 @@ SuccessExitStatus=143
 PermissionsStartOnly=true
 
 # Create the pid dir
-ExecStartPre=/usr/bin/install -o $AGENT_USER -d $PIDDIR
+ExecStartPre=/bin/sh -c "\"${AGENT_HOME}/install.sh\" -o $AGENT_USER -d $PIDDIR
 
 # This specifies the command line to use
-ExecStart=/bin/sh -c "\"${AGENT_HOME}/bin/machine-agent\" -p ${PIDFILE}"
+ExecStart=/bin/sh -c "\"${AGENT_HOME}/runSDKProxy.sh\" -p ${PIDFILE}"
 
 [Install]
 # Start the AppDynamics agent service during the setup for a
