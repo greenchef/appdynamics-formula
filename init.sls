@@ -13,7 +13,7 @@ unpack-appdynamics-tarball:
     - enforce_toplevel: False
     - require:
       - module: appdynamics-stop
-#      - file: appdynamics-init-script
+      - file: appdynamics-init-script
       - user: appdynamics
     - listen_in:
       - module: appdynamics-restart
@@ -44,7 +44,7 @@ appdynamics-service:
     - enable: True
     - require:
       - archive: unpack-appdynamics-tarball
-#      - file: appdynamics-init-script
+      - file: appdynamics-init-script
 
 # used to trigger restarts by other states
 appdynamics-restart:
@@ -57,44 +57,29 @@ appdynamics-stop:
     - name: service.stop
     - m_name: appdynamics
 
-#appdynamics-init-script:
-#  file.managed:
-#    - name: '/lib/systemd/system/appdynamics-agent.service'
-#    - source: salt://appdynamics/templates/appdynamics-machine-agent.service.tmpl #TODO - Do I really need an init script?
-#    - user: root
-#    - group: root
-#    - mode: 0644
-#    - template: jinja
-#    - context:
-#      appd: {{ appd|json }}
+appdynamics-init-script:
+  file.managed:
+    - name: '/lib/systemd/system/appdynamics-agent.service'
+    - source: salt://appdynamics/templates/appdynamics-machine-agent.service.tmpl
+    - user: root
+    - group: root
+    - mode: 0644
+    - template: jinja
+    - context:
+      appd: {{ appd|json }}
 
 create-appdynamics-service-symlink:
   file.symlink:
     - name: '/etc/systemd/system/appdynamics.service'
     - target: '/lib/systemd/system/appdynamics-agent.service'
     - user: root
-#    - watch:
-#      - file: appdynamics-init-script
+    - watch:
+      - file: appdynamics-init-script
 
 appdynamics:
   user.present
 
 ### FILES ###
-{{ appd.prefix }}/appdynamics-agent/conf/controller-info.xml:
-  file.managed:
-    - source: salt://appdynamics/templates/controller-info.xml.tmpl
-    - user: {{ appd.user }}
-    - template: jinja
-    - listen_in:
-      - module: appdynamics-restart
-
-#{{ appd.prefix }}/appdynamics-agent/bin/machine-agent: # TODO
-#  file.managed:
-#    - source: {{ appd.prefix }}/appdynamics-agent/bin/machine-agent # TODO
-#    - user: {{ appd.user }}
-#    - mode: 0754
-#    - watch_in:
-#      - module: appdynamics-restart
 
 {{ appd.prefix }}/appdynamics-agent/proxy/jre/bin/java:
   file.managed:
@@ -104,29 +89,13 @@ appdynamics:
     - watch_in:
       - module: appdynamics-restart
 
-{{ appd.prefix }}/appdynamics-agent/monitors/HardwareMonitor/monitor.xml:
-  file.managed:
-    - source: salt://appdynamics/templates/hardware-monitor.xml.tmpl
-    - user: {{ appd.user }}
-    - template: jinja
-    - listen_in:
-      - module: appdynamics-restart
-
-{{ appd.prefix }}/appdynamics-agent/monitors/HardwareMonitor/linux-stat.sh:
-  file.managed:
-    - source: {{ appd.prefix }}/appdynamics-agent/monitors/HardwareMonitor/linux-stat.sh
-    - user: {{ appd.user }}
-    - mode: 0754
-    - listen_in:
-      - module: appdynamics-restart
-
-#/opt/sumologic/sumocollector/sources/appdynamics-agent.json:
-#  file.serialize:
-#    - user: root
-#    - formatter: json
-#    - dataset:
-#        "api.version": "v1"
-#        source:
-#          sourceType: LocalFile
-#          name: appd-agent
-#          pathExpression: {{ appd.prefix }}/appdynamics-agent/logs/machine-agent.log
+/opt/sumologic/sumocollector/sources/appdynamics-agent.json:
+  file.serialize:
+    - user: root
+    - formatter: json
+    - dataset:
+        "api.version": "v1"
+        source:
+          sourceType: LocalFile
+          name: appd-agent
+          pathExpression: {{ appd.prefix }}/appdynamics-agent/logs/machine-agent.log
