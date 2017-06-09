@@ -3,12 +3,12 @@
 ### APPLICATION INSTALL ###
 unpack-appdynamics-tarball:
   archive.extracted:
-    - name: {{ appd.prefix }}/appdynamics-sdk-native-nativeWebServer-64bit-linux-{{ appd.version }}
-    - source: {{ appd.source_url }}/appdynamics-sdk-native-nativeWebServer-64bit-linux-{{ appd.version }}.tar.gz
+    - name: {{ appd.prefix }}/machineagent-bundle-64bit-linux-{{ appd.version }}
+    - source: {{ appd.source_url }}/machineagent-bundle-64bit-linux-{{ appd.version }}.zip
     - source_hash: {{ salt['pillar.get']('appdynamics:source_hash', '') }}
-    - archive_format: tar
+    - archive_format: zip
     - user: {{ appd.user }}
-    - if_missing: {{ appd.prefix }}/appdynamics-sdk-native-nativeWebServer-64bit-linux-{{ appd.version }}
+    - if_missing: {{ appd.prefix }}/machineagent-bundle-64bit-linux-{{ appd.version }}
     - keep: True
     - enforce_toplevel: False
     - require:
@@ -24,7 +24,7 @@ fix-appdynamics-filesystem-permissions:
     - recurse:
       - user
     - names:
-      - {{ appd.prefix }}/appdynamics-sdk-native-nativeWebServer-64bit-linux-{{ appd.version }}
+      - {{ appd.prefix }}/machineagent-bundle-64bit-linux-{{ appd.version }}
       - {{ appd.home }}
     - watch:
       - archive: unpack-appdynamics-tarball
@@ -32,7 +32,7 @@ fix-appdynamics-filesystem-permissions:
 create-appdynamics-symlink:
   file.symlink:
     - name: {{ appd.prefix }}/appdynamics-agent
-    - target: {{ appd.prefix }}/appdynamics-sdk-native-nativeWebServer-64bit-linux-{{ appd.version }}/appdynamics-sdk-native
+    - target: {{ appd.prefix }}/machineagent-bundle-64bit-linux-{{ appd.version }}
     - user: appdynamics
     - watch:
       - archive: unpack-appdynamics-tarball
@@ -59,8 +59,8 @@ appdynamics-stop:
 
 appdynamics-init-script:
   file.managed:
-    - name: '/lib/systemd/system/appdynamics-agent.service'
-    - source: salt://appdynamics/templates/appdynamics.systemd.tmpl
+    - name: '/lib/systemd/system/appdynamics-machine-agent.service'
+    - source: salt://appdynamics/templates/appdynamics-machine-agent.service.tmpl
     - user: root
     - group: root
     - mode: 0644
@@ -71,7 +71,7 @@ appdynamics-init-script:
 create-appdynamics-service-symlink:
   file.symlink:
     - name: '/etc/systemd/system/appdynamics.service'
-    - target: '/lib/systemd/system/appdynamics-agent.service'
+    - target: '/lib/systemd/system/appdynamics-machine-agent.service'
     - user: root
     - watch:
       - file: appdynamics-init-script
@@ -80,13 +80,44 @@ appdynamics:
   user.present
 
 ### FILES ###
-
-{{ appd.prefix }}/appdynamics-agent/proxy/jre/bin/java:
+{{ appd.prefix }}/appdynamics-agent/conf/controller-info.xml:
   file.managed:
-    - source: {{ appd.prefix }}/appdynamics-agent/proxy/jre/bin/java
+    - source: salt://appdynamics/templates/controller-info.xml.tmpl
+    - user: {{ appd.user }}
+    - template: jinja
+    - listen_in:
+      - module: appdynamics-restart
+
+{{ appd.prefix }}/appdynamics-agent/bin/machine-agent:
+  file.managed:
+    - source: {{ appd.prefix }}/appdynamics-agent/bin/machine-agent
     - user: {{ appd.user }}
     - mode: 0754
     - watch_in:
+      - module: appdynamics-restart
+
+{{ appd.prefix }}/appdynamics-agent/jre/bin/java:
+  file.managed:
+    - source: {{ appd.prefix }}/appdynamics-agent/jre/bin/java
+    - user: {{ appd.user }}
+    - mode: 0754
+    - watch_in:
+      - module: appdynamics-restart
+
+{{ appd.prefix }}/appdynamics-agent/monitors/HardwareMonitor/monitor.xml:
+  file.managed:
+    - source: salt://appdynamics/templates/hardware-monitor.xml.tmpl
+    - user: {{ appd.user }}
+    - template: jinja
+    - listen_in:
+      - module: appdynamics-restart
+
+{{ appd.prefix }}/appdynamics-agent/monitors/HardwareMonitor/linux-stat.sh:
+  file.managed:
+    - source: {{ appd.prefix }}/appdynamics-agent/monitors/HardwareMonitor/linux-stat.sh
+    - user: {{ appd.user }}
+    - mode: 0754
+    - listen_in:
       - module: appdynamics-restart
 
 /opt/sumologic/sumocollector/sources/appdynamics-agent.json:
