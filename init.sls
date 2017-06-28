@@ -146,6 +146,6 @@ appdynamics:
 {% endif %}
 
           # Set the sourceCategory
-          sourceCategory: "{{cluster}}/{{app}}/appd"
+          category: "{{cluster}}/{{app}}/appd"
 
 
