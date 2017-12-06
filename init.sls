@@ -77,8 +77,7 @@ create-appdynamics-service-symlink:
       - file: appdynamics-init-script
 
 {{ appd.user }}:
-  user.present:
-    - system: true
+  user.present
 
 ### FILES ###
 {{ appd.prefix }}/appdynamics-agent/conf/controller-info.xml:
