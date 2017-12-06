@@ -76,7 +76,7 @@ create-appdynamics-service-symlink:
     - watch:
       - file: appdynamics-init-script
 
-appdynamics:
+{{ appd.user }}:
   user.present:
     - system: true
 
