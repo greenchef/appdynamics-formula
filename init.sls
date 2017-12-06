@@ -14,13 +14,13 @@ unpack-appdynamics-tarball:
     - require:
       - module: appdynamics-stop
       - file: appdynamics-init-script
-      - user: appdynamics
+      - user: {{ appd.user }}
     - listen_in:
       - module: appdynamics-restart
 
 fix-appdynamics-filesystem-permissions:
   file.directory:
-    - user: appdynamics
+    - user: {{ appd.user }}
     - recurse:
       - user
     - names:
@@ -33,7 +33,7 @@ create-appdynamics-symlink:
   file.symlink:
     - name: {{ appd.prefix }}/appdynamics-agent
     - target: {{ appd.prefix }}/machineagent-bundle-64bit-linux-{{ appd.version }}
-    - user: appdynamics
+    - user: {{ appd.user }}
     - watch:
       - archive: unpack-appdynamics-tarball
 
@@ -77,7 +77,8 @@ create-appdynamics-service-symlink:
       - file: appdynamics-init-script
 
 appdynamics:
-  user.present
+  user.present:
+    - system: true
 
 ### FILES ###
 {{ appd.prefix }}/appdynamics-agent/conf/controller-info.xml:
